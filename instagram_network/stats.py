@@ -1,5 +1,5 @@
 import instaloader
-from instagram_network.loader import context
+from .loader import context
 
 
 def follower_followee_count(user_id):
