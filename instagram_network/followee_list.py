@@ -1,32 +1,13 @@
 import argparse
 import instaloader
 import json
-import os
 import sys
-from functools import lru_cache
+from loader import context
 
 
 def main(*, user_ids):
     all_followees = [{user_id: followees(user_id)} for user_id in user_ids]
     print(json.dumps({'followees': all_followees}))
-
-
-@lru_cache(maxsize=None)
-def loader_context():
-    """Get logged in context.
-
-    Returns:
-        InstaloaderContext: logged in context.
-
-    Examples:
-        >>> loader_context()
-        <instaloader.instaloadercontext.InstaloaderContext at 0x111456e10>
-    """
-
-    loader = instaloader.Instaloader()
-    loader.login(os.environ['INSTAGRAM_USER_ID'],
-                 os.environ['INSTAGRAM_PASSWORD'])
-    return loader.context
 
 
 def followees(user_id):
@@ -43,7 +24,7 @@ def followees(user_id):
         ['followee1', 'followee2', 'followee3']
     """
     print(f"Getting {user_id}'s followees.", file=sys.stderr)
-    profile = instaloader.Profile.from_username(loader_context(), user_id)
+    profile = instaloader.Profile.from_username(context(), user_id)
     followee_list = [followee.username for followee in profile.get_followees()]
     output = f'{user_id}_followees.json'
     with open(output, 'w') as io:
