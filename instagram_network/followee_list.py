@@ -2,7 +2,7 @@ import argparse
 import instaloader
 import json
 import sys
-from loader import context
+from instagram_network.loader import context
 
 
 def main(*, user_ids):
