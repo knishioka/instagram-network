@@ -4,11 +4,12 @@ import json
 from .loader import context
 
 
-def get_profile(user_id):
+def get_profile(user_id, as_json=False):
     """Get user profile as json format
 
     Args:
         user_id (str): Instagram user_id.
+        as_json (bool): json (True), dict (False)
 
     Returns:
         str: json formatted user profile
@@ -18,7 +19,7 @@ def get_profile(user_id):
         '{"userid": 123456, "username": "target_username",...}'
     """
     profile = instaloader.Profile.from_username(context(), user_id)
-    return json.dumps({
+    profile_dict = {
         'userid': profile.userid,
         'username': profile.username,
         'full_nam': profile.full_name,
@@ -27,7 +28,11 @@ def get_profile(user_id):
         'followees': profile.followees,
         'followers': profile.followers,
         'mediacount': profile.mediacount
-    })
+    }
+    if as_json:
+        return json.dumps(profile_dict)
+    else:
+        return profile_dict
 
 
 if __name__ == '__main__':
@@ -36,4 +41,4 @@ if __name__ == '__main__':
                         required=True,
                         help='instagram user ids')
     args = parser.parse_args()
-    print(get_profile(args.user_id))
+    print(get_profile(args.user_id, as_json=True))
