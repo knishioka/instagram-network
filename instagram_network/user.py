@@ -22,7 +22,7 @@ def get_profile(user_id, as_json=False):
     profile_dict = {
         'userid': profile.userid,
         'username': profile.username,
-        'full_nam': profile.full_name,
+        'full_name': profile.full_name,
         'is_verified': profile.is_verified,
         'biography': profile.biography,
         'followees': profile.followees,
