@@ -5,7 +5,7 @@ from .loader import context
 
 
 def get_profile(user_id, as_json=False):
-    """Get user profile as json format
+    """Get user profile as json format.
 
     Args:
         user_id (str): Instagram user_id.
@@ -17,6 +17,7 @@ def get_profile(user_id, as_json=False):
     Examples:
         >>> get_profile('target_username')
         '{"userid": 123456, "username": "target_username",...}'
+
     """
     profile = instaloader.Profile.from_username(context(), user_id)
     profile_dict = {

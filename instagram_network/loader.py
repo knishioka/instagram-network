@@ -13,8 +13,8 @@ def context():
     Examples:
         >>> loader_context()
         <instaloader.instaloadercontext.InstaloaderContext at 0x111456e10>
-    """
 
+    """
     loader = instaloader.Instaloader()
     loader.login(os.environ['INSTAGRAM_USER_ID'],
                  os.environ['INSTAGRAM_PASSWORD'])

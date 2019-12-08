@@ -14,8 +14,7 @@ def main():
 
 
 def list_to_true_value_dict(user_list):
-    """Convert list to dict with True.
-    The dict is used to initialize Pandas Dataframe.
+    """Convert list to dict with True for Pandas Dataframe.
 
     Args:
         user_list (list of str): user_id list.
@@ -26,8 +25,8 @@ def list_to_true_value_dict(user_list):
     Examples:
         >>> list_to_relation_dict(['a', 'b', 'c'])
         {'a': True, 'b': True, 'c': True}
-    """
 
+    """
     return {user: True for user in user_list}
 
 

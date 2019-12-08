@@ -22,6 +22,7 @@ def followees(user_id):
     Examples:
         >>> followees(target_user_id)
         ['followee1', 'followee2', 'followee3']
+
     """
     print(f"Getting {user_id}'s followees.", file=sys.stderr)
     profile = instaloader.Profile.from_username(context(), user_id)
