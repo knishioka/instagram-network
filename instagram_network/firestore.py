@@ -1,10 +1,14 @@
 import firebase_admin
+from datetime import datetime
 from firebase_admin import firestore
 
 
-def initialize():
+def connection():
+    """Create connection to firebase.
+    """
     if (not len(firebase_admin._apps)):
-        return firebase_admin.initialize_app()
+        firebase_admin.initialize_app()
+    return firestore.client()
 
 
 def store_user(profile):
@@ -24,8 +28,7 @@ def store_user(profile):
             nanos: 49912000
         }
     """
-    initialize()
-    db = firestore.client()
+    db = connection()
     doc_ref = db.document(f'users/{profile.username}')
 
     return doc_ref.set({
@@ -35,5 +38,30 @@ def store_user(profile):
         'biography': profile.biography,
         'followees': profile.followees,
         'followers': profile.followers,
-        'mediacount': profile.mediacount
+        'mediacount': profile.mediacount,
+        'stored_at': datetime.now()
     })
+
+
+def fetch_user(userid):
+    """Fetch user data from firebase.
+
+    Args:
+        userid (str): firebase userid.
+
+    Returns:
+        dict: user profile dict.
+
+    Examples:
+        >>> fetch_user("shinzoabe")
+        {'full_name': '安倍晋三',
+         'followees': 22,
+         'followers': 488862,
+         'is_verified': True,
+         'mediacount': 409,
+         'userid': 6738899121,
+         'biography': ''}
+
+    """
+    db = connection()
+    return db.document(f"users/{userid}").get().to_dict()
