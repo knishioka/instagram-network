@@ -17,3 +17,6 @@ export INSTAGRAM_USER_ID=<your instagram id>
 export INSTAGRAM_PASSWORD=<your instagram password>
 python followee_list.py --users user_id1,user_id2,user_id3
 ```
+
+## Store data in firebase
+If you want to store data in firebase, you need to set `GOOGLE_APPLICATION_CREDENTIALS`.
