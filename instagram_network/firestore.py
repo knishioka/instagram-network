@@ -1,6 +1,8 @@
 import firebase_admin
+import instaloader
 from datetime import datetime
 from firebase_admin import firestore
+from .loader import context
 
 
 def connection():
@@ -43,11 +45,12 @@ def store_user(profile):
     })
 
 
-def fetch_user(userid):
+def fetch_user(userid, store_if_not_exists=True):
     """Fetch user data from firebase.
 
     Args:
-        userid (str): firebase userid.
+        userid (str): instagram user id.
+        store_if_not_exists (boolean): get data from instagram if not exists.
 
     Returns:
         dict: user profile dict.
@@ -64,4 +67,10 @@ def fetch_user(userid):
 
     """
     db = connection()
-    return db.document(f"users/{userid}").get().to_dict()
+    res = db.document(f"users/{userid}").get().to_dict()
+    if res is None and store_if_not_exists:
+        profile = instaloader.Profile.from_username(context(), userid)
+        store_user(profile)
+        return fetch_user(userid, store_if_not_exists=False)
+    else:
+        return res
