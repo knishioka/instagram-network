@@ -46,7 +46,7 @@ def store_user(profile, attrs={}):
 
     valid_attr_keys = ['is_artist', 'is_gallery',
                        'price_max', 'price_min', 'price_avg']
-    valid_attrs = [attrs.get(k) for k in valid_attr_keys]
+    valid_attrs = {k: attrs.get(k) for k in valid_attr_keys}
 
     return doc_ref.set({**profile_dict, **valid_attrs})
 
