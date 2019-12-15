@@ -9,11 +9,16 @@ class BaseModel(metaclass=ABCMeta):
 
     def __init__(self, doc_id, attrs):
         self.doc_id = doc_id
-        self.attrs = attrs
+        [exec(f'self.{k} = {attrs.get(k)}') for k in self.valid_keys]
 
     @property
     @abstractmethod
     def collection(self):
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def valid_keys(self):
         raise NotImplementedError
 
     def connection():
