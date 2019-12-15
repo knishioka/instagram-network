@@ -9,7 +9,8 @@ class BaseModel(metaclass=ABCMeta):
 
     def __init__(self, doc_id, attrs):
         self.doc_id = doc_id
-        [exec(f'self.{k} = {attrs.get(k)}') for k in self.valid_keys]
+        for k in self.valid_keys:
+            setattr(self, k, attrs.get(k))
 
     @property
     @abstractmethod
@@ -59,11 +60,9 @@ class BaseModel(metaclass=ABCMeta):
         doc.set(attrs)
         return cls(doc_id=doc_id, attrs=doc.get().to_dict())
 
-    @abstractmethod
     def update(self):
         pass
 
-    @abstractmethod
     def destroy(self):
         pass
 
