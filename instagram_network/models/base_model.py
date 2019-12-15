@@ -62,14 +62,15 @@ class BaseModel(metaclass=ABCMeta):
         Args:
             cls (BaseModel): class itself.
             doc_id: firebase document_id.
-            attrs: document attributes.
+            attrs: document attributes which will be filtered by valid_keys.
 
         Returns:
             BaseModel
 
         """
         doc = cls.document(doc_id)
-        doc.set(attrs)
+        valid_attrs = {k: attrs.get(k) for k in cls.valid_keys}
+        doc.set(valid_attrs)
         return cls(doc_id=doc_id, attrs=doc.get().to_dict())
 
     def update(self):
