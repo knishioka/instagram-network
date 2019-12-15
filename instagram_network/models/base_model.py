@@ -8,6 +8,16 @@ class BaseModel(metaclass=ABCMeta):
     """CRUD for Firestore."""
 
     def __init__(self, doc_id, attrs):
+        """Initialize firebase model.
+
+        Args:
+            doc_id (str): firestore document id.
+            attrs (dict): custome attributes which key will be variable name.
+
+        Returns:
+            BaseModel
+
+        """
         self.doc_id = doc_id
         for k in self.valid_keys:
             setattr(self, k, attrs.get(k))
@@ -15,11 +25,13 @@ class BaseModel(metaclass=ABCMeta):
     @property
     @abstractmethod
     def collection(self):
+        """Firebase collection name."""
         raise NotImplementedError
 
     @property
     @abstractmethod
     def valid_keys(self):
+        """Valid custom attribution list."""
         raise NotImplementedError
 
     def connection():
@@ -61,9 +73,11 @@ class BaseModel(metaclass=ABCMeta):
         return cls(doc_id=doc_id, attrs=doc.get().to_dict())
 
     def update(self):
+        """Update data to firebase."""
         pass
 
     def destroy(self):
+        """Destroy data from firebase."""
         pass
 
     @classmethod
