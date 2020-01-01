@@ -2,25 +2,42 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"log"
-
+	"encoding/json"
 	firebase "firebase.google.com/go"
+	"fmt"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-	ctx := context.Background()
-	opt := option.WithCredentialsFile(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
-	fmt.Println(ctx, opt)
+	e := echo.New()
 
-	app, err := firebase.NewApp(ctx, nil, opt)
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.GET("/users", usersHandler())
+
+	e.Start(":8080")
+}
+
+func firebaseInit() *firebase.App {
+	opt := option.WithCredentialsFile(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+
+	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//
+	return app
+}
+
+func users() {
+	ctx := context.Background()
+	app := firebaseInit()
 	client, err := app.Firestore(ctx)
 	if err != nil {
 		fmt.Println(err)
@@ -35,6 +52,14 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to iterate: %v", err)
 		}
-		fmt.Println(doc.Data())
+		bytes, _ := json.Marshal(doc.Data())
+		fmt.Println(string(bytes)) // TODO return JSON
+	}
+}
+
+func usersHandler() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		users() // TODO get JSON
+		return c.String(http.StatusOK, "aaa")
 	}
 }
