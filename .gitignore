@@ -107,3 +107,6 @@ venv.bak/
 *.csv
 .ipynb_checkpoints
 .DS_store
+
+# Intellij
+.idea
