@@ -6,4 +6,5 @@ class UserModel(BaseModel):
 
     collection = 'users'
     valid_keys = ['full_name', 'is_verified', 'biography',
-                  'followees', 'followers', 'mediacount']
+                  'followees', 'followers', 'mediacount',
+                  'userid']
