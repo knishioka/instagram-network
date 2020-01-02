@@ -11,22 +11,22 @@ import (
 	"log"
 	"net/http"
 	"os"
-	//"time"
+	"time"
 )
 
 type Person struct {
-	Age          int     `json:"age"`
-	Biography    string  `json:"biography""`
-	Born         string  `json:"born"`
-	Followees    int     `json:"followees"`
-	Followers    int     `json:"followers"`
-	Intersection int     `json:"intersection"`
-	IsArtist     bool    `json:"is_artist"`
-	IsVerified   bool    `json:"is_verified"`
-	MediaCount   int     `json:"media_count"`
-	PriceAverage float64 `json:"price_average""`
-	StoredAt     string  `json:"stored_at"`
-	UserID       string  `json:"userid"`
+	Age          int       `json:"age"`
+	Biography    string    `json:"biography""`
+	Born         string    `json:"born"`
+	Followees    int       `json:"followees"`
+	Followers    int       `json:"followers"`
+	Intersection int       `json:"intersection"`
+	IsArtist     bool      `json:"is_artist"`
+	IsVerified   bool      `json:"is_verified"`
+	MediaCount   int       `json:"media_count"`
+	PriceAverage float64   `json:"price_average""`
+	StoredAt     time.Time `json:"stored_at"`
+	UserID       string    `json:"userid"`
 }
 
 func firebaseInit() *firebase.App {
@@ -49,21 +49,22 @@ func users(num int) {
 	iter := client.Collection("users").Documents(ctx)
 	for {
 		doc, err := iter.Next()
-		if err == iterator.Done || num == 2 {
+		if err == iterator.Done || num == 4 {
 			break
 		}
 		if err != nil {
 			log.Fatalf("Failed to iterate: %v", err)
 		}
-		bytes, _ := json.Marshal(doc.Data())
-		fmt.Println(doc.Data())
+		bytes, _ := json.Marshal(doc.Data()) // FIXME: Unparsable map
+		fmt.Println("doc.Data():\t", doc.Data())
+		fmt.Println("JSON:\t", string(bytes))
 		var person Person
 		json.Unmarshal(bytes, &person)
 		fmt.Println(string(bytes)) // TODO: return JSON
-		fmt.Println("document id:", doc.Ref.ID)
-		fmt.Println("user_id: ", person.UserID)
-		fmt.Println("media_count: ", person.MediaCount)
-		fmt.Println("stored_at: ", person.StoredAt)
+		fmt.Println("document id:\t", doc.Ref.ID)
+		fmt.Println("user_id:\t", person.UserID)
+		fmt.Println("media_count:\t", person.MediaCount)
+		fmt.Println("stored_at:\t", person.StoredAt)
 		num += 1
 	}
 }
