@@ -70,6 +70,17 @@ func users(num int) {
 	}
 }
 
+func fetch_user(user_id string) {
+	ctx := context.Background()
+	app := firebaseInit()
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		fmt.Println(err)
+	}
+	user, _ := client.Collection("users").Doc(user_id).Get(ctx)
+	fmt.Println(user.Data())
+}
+
 func usersHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		users(0) // TODO: get JSON
