@@ -15,18 +15,18 @@ import (
 )
 
 type Person struct {
-	Age          int       `json:"age"`
-	Biography    string    `json:"biography""`
-	Born         string    `json:"born"`
-	Followees    int       `json:"followees"`
-	Followers    int       `json:"followers"`
-	Intersection int       `json:"intersection"`
-	IsArtist     bool      `json:"is_artist"`
-	IsVerified   bool      `json:"is_verified"`
-	MediaCount   int       `json:"media_count"`
-	PriceAverage float64   `json:"price_average""`
-	StoredAt     time.Time `json:"stored_at"`
-	UserID       string    `json:"userid"`
+	Age          int       `firestore:"age"`
+	Biography    string    `firestore:"biography""`
+	Born         string    `firestore:"born"`
+	Followees    int       `firestore:"followees"`
+	Followers    int       `firestore:"followers"`
+	Intersection int       `firestore:"intersection"`
+	IsArtist     bool      `firestore:"is_artist"`
+	IsVerified   bool      `firestore:"is_verified"`
+	MediaCount   int       `firestore:"media_count"`
+	PriceAverage float64   `firestore:"price_average""`
+	StoredAt     time.Time `firestore:"stored_at"`
+	UserID       int64     `firestore:"userid"`
 }
 
 func firebaseInit() *firebase.App {
@@ -59,8 +59,9 @@ func users(num int) {
 		fmt.Println("doc.Data():\t", doc.Data())
 		fmt.Println("JSON:\t", string(bytes))
 		var person Person
-		json.Unmarshal(bytes, &person)
-		fmt.Println(string(bytes)) // TODO: return JSON
+		doc.DataTo(&person)
+		// json.Unmarshal(bytes, &person)
+		// fmt.Println(string(bytes)) // TODO: return JSON
 		fmt.Println("document id:\t", doc.Ref.ID)
 		fmt.Println("user_id:\t", person.UserID)
 		fmt.Println("media_count:\t", person.MediaCount)
