@@ -12,6 +12,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/users", usersHandler())
+	e.GET("/users/:user_id", userHandler())
 
 	e.Start(":8080")
 }

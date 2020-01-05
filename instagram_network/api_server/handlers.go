@@ -84,6 +84,14 @@ func fetch_user(user_id string) {
 func usersHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		users(0) // TODO: get JSON
-		return c.String(http.StatusOK, "aaa")
+		return c.String(http.StatusOK, "OK")
+	}
+}
+
+func userHandler() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		user_id := c.Param("user_id")
+		fetch_user(user_id)
+		return c.String(http.StatusOK, "OK")
 	}
 }
