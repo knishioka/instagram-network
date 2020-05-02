@@ -95,3 +95,12 @@ class BaseModel(metaclass=ABCMeta):
         """
         doc = cls.document(doc_id)
         return cls(doc_id=doc_id, attrs=doc.get().to_dict())
+
+    def to_dict(self):
+        """Export attributes as dict.
+
+        Returns:
+            dict: model attributes.
+
+        """
+        return {k: self.__dict__.get(k) for k in self.valid_keys}
