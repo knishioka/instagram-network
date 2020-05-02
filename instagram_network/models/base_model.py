@@ -12,7 +12,7 @@ class BaseModel(metaclass=ABCMeta):
 
         Args:
             doc_id (str): firestore document id.
-            attrs (dict): custome attributes which key will be variable name.
+            attrs (dict): custom attributes which key will be variable name.
 
         Returns:
             BaseModel
@@ -73,9 +73,20 @@ class BaseModel(metaclass=ABCMeta):
         doc.set(valid_attrs)
         return cls(doc_id=doc_id, attrs=doc.get().to_dict())
 
-    def update(self):
-        """Update data to firebase."""
-        pass
+    def update(self, attrs):
+        """Update data to firebase.
+
+        Args:
+            attrs (dict): custom attributes which key will be variable name.
+
+        Returns:
+            BaseModel
+
+        """
+        valid_attrs = {k: attrs.get(k) for k in self.valid_keys}
+        self.document(self.doc_id).set(valid_attrs)
+        for k in self.valid_keys:
+            setattr(self, k, valid_attrs.get(k))
 
     def destroy(self):
         """Destroy data from firebase."""
