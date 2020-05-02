@@ -9,6 +9,7 @@ verify_ssl = true
 instaloader = "*"
 firebase-admin = "*"
 pytest = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.8"
