@@ -84,7 +84,7 @@ class BaseModel(metaclass=ABCMeta):
 
         """
         current_attrs = self.to_dict()
-        new_attrs = {k: attrs.get(k) for k in self.valid_keys}
+        new_attrs = {k: attrs.get(k) for k in self.valid_keys if k in attrs}
         valid_attrs = {**current_attrs, **new_attrs}
         self.document(self.doc_id).set(valid_attrs)
         for k in self.valid_keys:
